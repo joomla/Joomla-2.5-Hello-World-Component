@@ -23,7 +23,26 @@ class HelloWorldModelHelloWorld extends JModelItem
 	{
 		if (!isset($this->msg))
 		{
-			$this->msg = 'Hello World!';
+			//Uses JInput if magic quotes is turned off. Falls back to use JRequest.
+			if (!get_magic_quotes_gpc())
+			{
+				$id = JFactory::getApplication()->input->get('id', 1, 'INT');
+			}
+			else
+			{
+				$id = JRequest::getInt('id');
+			}
+
+			switch ($id)
+			{
+				case 2:
+					$this->msg = 'Good bye World!';
+					break;
+				default:
+				case 1:
+					$this->msg = 'Hello World!';
+					break;
+			}
 		}
 
 		return $this->msg;
